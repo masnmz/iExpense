@@ -55,10 +55,12 @@ struct ContentView: View {
                                     Spacer()
                                     
                                     Text(item.amount, format: .currency(code: "GBP"))
-                                        .foregroundStyle(item.amount < 10 ? .green : item.amount > 100 ? .indigo : .red)
+                                        .foregroundStyle(item.amount < 10 ? .green : item.amount > 100 ? .red : .blue)
                                 }
                             }
-                            .onDelete(perform: removeItems)
+                            .onDelete { offsets in
+                                removeItems(offsets, type:"Personal")
+                            }
                         }
                     }
                     if !expenses.items.filter({$0.type == "Business"}).isEmpty {
@@ -77,7 +79,9 @@ struct ContentView: View {
                                         .foregroundStyle(item.amount < 10 ? .green : item.amount > 100 ? .red : .blue)
                                 }
                             }
-                            .onDelete(perform: removeItems)
+                            .onDelete { offsets in
+                                removeItems(offsets, type:"Business")
+                            }
                         }
                     }
                 }
@@ -96,9 +100,14 @@ struct ContentView: View {
         }
     }
     
-    func removeItems(at offsets: IndexSet) {
-        expenses.items.remove(atOffsets: offsets)
-    }
+    func removeItems(_ offsets: IndexSet, type: String) {
+            let filteredItems = expenses.items.filter { $0.type == type }
+            for offset in offsets {
+                if let index = expenses.items.firstIndex(where: { $0.id == filteredItems[offset].id }) {
+                    expenses.items.remove(at: index)
+                }
+            }
+        }
 }
 
 
