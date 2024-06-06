@@ -38,15 +38,22 @@ struct AddView: View {
             .background(RadialGradient(colors: [.green, .red], center: .center, startRadius: 10, endRadius: 500))
             .navigationTitle("Add New Expense")
             .toolbar {
-                Button("Save") {
-                    let item = ExpenseItem(name: name, type: type, amount: amount)
-                    expenses.items.append(item)
-                    dismiss()
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        let item = ExpenseItem(name: name, type: type, amount: amount)
+                        expenses.items.append(item)
+                        dismiss()
+                    }
                 }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
             }
         }
-        
-        
+        .navigationBarBackButtonHidden()
     }
 }
 

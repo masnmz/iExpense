@@ -87,17 +87,17 @@ struct ContentView: View {
                 }
                 .navigationTitle("iExpense")
                 .toolbar {
-                    Button("Add Expense", systemImage: "plus") {
-                        showindAddExpense = true
+                    NavigationLink(destination: AddView(expenses: expenses)) {
+                        Image(systemName: "plus")
                     }
                 }
             }
             .background(LinearGradient(colors: [.yellow, .red], startPoint: .topLeading, endPoint: .bottomTrailing))
         }
         .scrollContentBackground(.hidden)
-        .sheet(isPresented: $showindAddExpense) {
-            AddView(expenses: expenses)
-        }
+//        .sheet(isPresented: $showindAddExpense) {
+//            AddView(expenses: expenses)
+//        }
     }
     
     func removeItems(_ offsets: IndexSet, type: String) {
